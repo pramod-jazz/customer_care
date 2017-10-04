@@ -25,6 +25,7 @@ repositories {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     testCompile('org.springframework.boot:spring-boot-starter-test')
     // https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.0.0'
@@ -35,7 +36,16 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     compile 'com.google.code.gson:gson:2.8.2'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.1'
-    compile 'org.springframework.data:spring-data-mongodb:1.10.6.RELEASE'
+    compile('com.fasterxml.jackson.core:jackson-databind:2.9.1')
+            {
+                exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+            }
+    compile('com.fasterxml.jackson.core:jackson-annotations:2.9.1')
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+
 
 }
+

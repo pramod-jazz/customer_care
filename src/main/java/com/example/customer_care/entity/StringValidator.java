@@ -14,15 +14,17 @@ public class StringValidator implements ConstraintValidator<AllowedComplaintType
     @Override
     public void initialize(AllowedComplaintTypes constraintAnnotation) {
         valueList = new ArrayList<String>();
-        for(String val : constraintAnnotation.acceptedValues()) {
+        for (String val : constraintAnnotation.acceptedValues()) {
             valueList.add(val.toUpperCase());
         }
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if(!valueList.contains(value.toUpperCase())) {
-            return false;
+        if (value != null) {
+            if (!valueList.contains(value.toUpperCase())) {
+                return false;
+            }
         }
         return true;
     }

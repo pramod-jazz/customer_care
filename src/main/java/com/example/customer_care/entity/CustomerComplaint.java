@@ -2,14 +2,15 @@ package com.example.customer_care.entity;
 
 import com.example.customer_care.customAnnotations.AllowedComplaintTypes;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
 public class CustomerComplaint {
 
-
-    private Integer id;
+    @Id
+    private String id;
 
     @NotNull(message = "First name is Mandatory. It must not be empty and must have characters.")
     @NotEmpty(message = "First name is Mandatory. It must not be empty and must have characters.")
@@ -23,17 +24,8 @@ public class CustomerComplaint {
 
     private String complaintMessage;
 
-    @AllowedComplaintTypes(acceptedValues = { "BILL_INFO" ,  "INTERNET", "PREPAID" , "POSTPAID" } , message = "Allowed Complaint Types values are INTERNET, BILL_INFO, PREPAID, POSTPAID.")
+    @AllowedComplaintTypes(acceptedValues = {"BILL_INFO", "INTERNET", "PREPAID", "POSTPAID"}, message = "Allowed Complaint Types values are INTERNET, BILL_INFO, PREPAID, POSTPAID.")
     private String complaintType;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -74,5 +66,13 @@ public class CustomerComplaint {
 
     public void setComplaintType(String complaintType) {
         this.complaintType = complaintType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

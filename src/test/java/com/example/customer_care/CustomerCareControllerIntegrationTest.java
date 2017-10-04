@@ -19,7 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -211,6 +211,26 @@ public class CustomerCareControllerIntegrationTest {
         }
 
     }
+
+
+    @Test
+    public void testShouldValidateAllRetrievedComplaints() throws Exception{
+
+        //Act and Expect
+        MvcResult result = this.mockMvc.perform(get("/product/search")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+
+
+        String response = result.getResponse().getContentAsString();
+
+        //Assert
+        Assert.assertThat(response,
+                org.hamcrest.Matchers.containsString("Allowed Complaint Types values are INTERNET, BILL_INFO, PREPAID, POSTPAID"));
+
+    }
+
+
 
 
 }
