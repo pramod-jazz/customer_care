@@ -1,4 +1,4 @@
-package com.example.customer_care;
+package com.example.customer_care.controllers;
 
 import com.example.customer_care.controller.CustomerCareController;
 import com.example.customer_care.entity.CustomerComplaint;
@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.*;
 import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.*;
@@ -38,11 +39,10 @@ import org.springframework.test.context.junit4.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CustomerCareControllerTest {
+public class CustomerCareControllerTest2 {
 
     @Autowired
     private CustomerCareController subject;
-
 
 
     @MockBean
@@ -64,8 +64,8 @@ public class CustomerCareControllerTest {
 
 
     @Test
-    public void testCustomerComplaintCreation(){
-       //Accept
+    public void testCustomerComplaintCreation() {
+        //Accept
         CustomerComplaint complaint = new CustomerComplaint();
         complaint.setFirstName("Pramod");
         complaint.setLastName("Nikam");
@@ -78,17 +78,15 @@ public class CustomerCareControllerTest {
         subject.createComplaint(complaint);
 
         //Assert
+
         Assert.assertNotNull(complaint);
         Assert.assertNull(complaint.getId());
 
 
-
-
-
     }
 
-   // @Test
-    public void testShouldCreateCustomerComplaint() throws Exception{
+    // @Test
+    public void testShouldCreateCustomerComplaint() throws Exception {
         System.out.print(" ***** Whether this works!");
         //Accept
         CustomerComplaint complaint = new CustomerComplaint();
@@ -106,14 +104,14 @@ public class CustomerCareControllerTest {
         String customerJSON = mapper.writeValueAsString(complaint);
         // Act
         // given(customerCareService.create(complaint)).willReturn(complaint);
-     //   when(customerCareService.create(any(CustomerComplaint.class))).thenReturn(complaint);
+        //   when(customerCareService.create(any(CustomerComplaint.class))).thenReturn(complaint);
 
         MvcResult mockResult = mockMvc.perform(post("/customers").contentType(MediaType.APPLICATION_JSON)
                 .content(customerJSON)).andExpect(status().isBadRequest()).andReturn();
 
         //Verify
-       // verify(customerCareService).create(complaint);
-       // verifyNoMoreInteractions(customerCareService);
+        // verify(customerCareService).create(complaint);
+        // verifyNoMoreInteractions(customerCareService);
 
         Assert.assertNotNull(complaint);
         Assert.assertNotNull(complaint.getId());
