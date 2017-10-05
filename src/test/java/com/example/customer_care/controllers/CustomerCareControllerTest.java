@@ -2,6 +2,7 @@ package com.example.customer_care.controllers;
 
 import com.example.customer_care.controller.CustomerCareController;
 import com.example.customer_care.entity.CustomerComplaint;
+import com.example.customer_care.exceptions.NewResourceNotAllowedInPutException;
 import com.example.customer_care.services.CustomerCareService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
@@ -273,6 +274,114 @@ public class CustomerCareControllerTest {
         Assert.assertThat(response,
                 org.hamcrest.Matchers.containsString("No record found."));
 
+
+    }
+
+
+    @Test
+    public void testShouldRemoveComplaint() throws Exception{
+        // Arrange
+        String complaintId = UUID.randomUUID().toString();
+        CustomerComplaint complaint = new CustomerComplaint();
+        complaint.setId(complaintId);
+
+
+        when(service.delete(any(String.class))).thenReturn(true);
+
+        //Act and Expect
+        MvcResult mockResult =  this.mockMvc.perform(delete("/complaints/" + complaintId)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent()).andReturn();
+
+        String response = mockResult.getResponse().getContentAsString();
+
+        Assert.assertThat(response,
+                org.hamcrest.Matchers.containsString("Record removed successfully."));
+
+
+    }
+
+
+    @Test
+    public void testShouldNotRemoveInvalidComplaint() throws Exception{
+        // Arrange
+        String complaintId = UUID.randomUUID().toString();
+        CustomerComplaint complaint = new CustomerComplaint();
+        complaint.setId(complaintId);
+
+
+        when(service.delete(any(String.class))).thenReturn(false);
+
+        //Act and Expect
+        MvcResult mockResult =  this.mockMvc.perform(delete("/complaints/" + complaintId)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound()).andReturn();
+
+        String response = mockResult.getResponse().getContentAsString();
+
+        Assert.assertThat(response,
+                org.hamcrest.Matchers.containsString("No record found to remove."));
+
+
+    }
+
+
+    @Test
+    public void testShouldUpdateCustomerComplaint()  throws Exception{
+
+        String complaintId =  UUID.randomUUID().toString();
+
+        //Accept
+        CustomerComplaint complaint = new CustomerComplaint();
+        complaint.setId(complaintId);
+        complaint.setFirstName("Pramod");
+        complaint.setLastName("Nikam");
+        complaint.setAgentId(1);
+        complaint.setComplaintMessage("TDD is Top down or Bottom Up?");
+
+        when(this.service.updateWhole(any(CustomerComplaint.class))).thenReturn(complaint);
+
+        String jsonPayload =  mapper.writeValueAsString(complaint);
+        //Act
+        MvcResult mockResult = mockMvc.perform(put("/complaints/" + complaintId ).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonPayload)).andExpect(status().isCreated()).andReturn();
+
+
+        //Assert
+        String response = mockResult.getResponse().getContentAsString();
+
+        Assert.assertThat(response,
+                org.hamcrest.Matchers.containsString("Pramod"));
+
+    }
+
+
+    @Test
+    public void testShouldDiscardNewCustomerComplaint()  throws Exception{
+
+        String complaintId =  UUID.randomUUID().toString();
+
+        //Accept
+        CustomerComplaint complaint = new CustomerComplaint();
+        complaint.setId(complaintId);
+        complaint.setFirstName("Pramod");
+        complaint.setLastName("Nikam");
+        complaint.setAgentId(1);
+        complaint.setComplaintMessage("TDD is Top down or Bottom Up?");
+
+        when(this.service.updateWhole(any(CustomerComplaint.class))).thenThrow(new NewResourceNotAllowedInPutException());
+
+        String jsonPayload =  mapper.writeValueAsString(complaint);
+        //Act
+        MvcResult mockResult = mockMvc.perform(put("/complaints/" + complaintId ).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonPayload)).andExpect(status().isMethodNotAllowed()).andReturn();
+
+
+        //Assert
+        String errorMessage = mockResult.getResponse().getErrorMessage();
+
+        Assert.assertThat(errorMessage,
+                org.hamcrest.Matchers.containsString("Existing resource is not allowed in Put Request. Please use POST method instead."));
 
     }
 

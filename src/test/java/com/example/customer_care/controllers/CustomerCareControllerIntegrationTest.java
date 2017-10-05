@@ -1,7 +1,9 @@
 package com.example.customer_care.controllers;
 
+import com.example.customer_care.CustomSystemProfileValueSource;
 import com.example.customer_care.controller.CustomerCareController;
 import com.example.customer_care.entity.CustomerComplaint;
+import com.example.customer_care.exceptions.NewResourceNotAllowedInPutException;
 import com.example.customer_care.repo.CustomerCareRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
@@ -15,6 +17,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.annotation.ProfileValueSourceConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,88 +41,75 @@ import org.springframework.boot.test.context.*;
 import org.springframework.boot.test.mock.mockito.*;
 import org.springframework.test.context.junit4.*;
 
+import java.util.UUID;
 
+
+@ProfileValueSourceConfiguration(value = CustomSystemProfileValueSource.class)
 @RunWith(SpringRunner.class)
-@SpringBootTest
-public class CustomerCareControllerTest2 {
+@IfProfileValue(name= "spring.profiles.active" , value = "embedded")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class CustomerCareControllerIntegrationTest {
 
-    @Autowired
-    private CustomerCareController subject;
-
-
-    @MockBean
-    private CustomerCareRepository customerCareRepository;
 
 
     @Autowired
-    private WebApplicationContext wac;
+    private CustomerCareController controller;
 
-    private MockMvc mockMvc;
-
-
-    @Before
-    public void setUp() throws Exception {
-        initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-
-    }
 
 
     @Test
-    public void testCustomerComplaintCreation() {
-        //Accept
-        CustomerComplaint complaint = new CustomerComplaint();
-        complaint.setFirstName("Pramod");
-        complaint.setLastName("Nikam");
-        complaint.setAgentId(1);
-        complaint.setComplaintMessage("TDD is Top down or Bottom Up?");
+    public void checkSave(){
+        //Arrange
+        String complaintId =  UUID.randomUUID().toString();
+        CustomerComplaint complaint = getCustomerComplaint(complaintId);
 
-        when(this.customerCareRepository.save(complaint)).thenReturn(complaint);
-
-        //Act
-        subject.createComplaint(complaint);
-
-        //Assert
-
-        Assert.assertNotNull(complaint);
-        Assert.assertNull(complaint.getId());
-
-
-    }
-
-    // @Test
-    public void testShouldCreateCustomerComplaint() throws Exception {
-        System.out.print(" ***** Whether this works!");
-        //Accept
-        CustomerComplaint complaint = new CustomerComplaint();
-        complaint.setFirstName("Pramod");
-        complaint.setLastName("Nikam");
-        complaint.setAgentId(1);
-        complaint.setComplaintMessage("TDD is Top down or Bottom Up?");
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        // Arrange Customer Complaint
-
-
-        // get Employee object as a json string
-        String customerJSON = mapper.writeValueAsString(complaint);
         // Act
-        // given(customerCareService.create(complaint)).willReturn(complaint);
-        //   when(customerCareService.create(any(CustomerComplaint.class))).thenReturn(complaint);
+        ResponseEntity returnedComplaint = controller.createComplaint(complaint);
 
-        MvcResult mockResult = mockMvc.perform(post("/customers").contentType(MediaType.APPLICATION_JSON)
-                .content(customerJSON)).andExpect(status().isBadRequest()).andReturn();
+        // Assert
 
-        //Verify
-        // verify(customerCareService).create(complaint);
-        // verifyNoMoreInteractions(customerCareService);
 
-        Assert.assertNotNull(complaint);
-        Assert.assertNotNull(complaint.getId());
-        //Assert.assertTrue(complaint.getId() instanceof Integer);
+        Assert.assertEquals(201, returnedComplaint.getStatusCodeValue());
+
+
 
     }
+
+    private CustomerComplaint getCustomerComplaint(String complaintId) {
+        CustomerComplaint complaint = new CustomerComplaint();
+        complaint.setId(complaintId);
+        complaint.setFirstName("Pramod");
+        complaint.setLastName("Nikam");
+        complaint.setAgentId(1);
+        complaint.setComplaintMessage("TDD is Top down or Bottom Up?");
+        return complaint;
+    }
+
+
+
+    @Test(expected = NewResourceNotAllowedInPutException.class)
+    public void checkUpdate() throws NewResourceNotAllowedInPutException{
+        //Arrange
+        String complaintId =  UUID.randomUUID().toString();
+        CustomerComplaint complaint = getCustomerComplaint(complaintId);
+
+
+        // Act
+
+        ResponseEntity responseEntity = controller.updateComplaint(complaint);
+
+        // Assert
+
+
+        Assert.assertEquals(201, responseEntity.getStatusCodeValue());
+
+
+
+
+    }
+
+
+
 
 
 }
