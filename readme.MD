@@ -36,6 +36,11 @@ To see generated test reports navigate to:
 
 <project_installation_directory>/build/reports/tests/test/index.html
 
+Entire REST UI documentation and  REST clinet UI to consume REST endpoint is included in Swagger2 UI.
+<Swagger 2 URL is as follow:>
+
+http://localhost:8087/swagger-ui.html
+
 
   
 
