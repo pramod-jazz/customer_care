@@ -13,9 +13,9 @@ public class CustomSystemProfileValueSource implements ProfileValueSource {
 
     @Override
     public String get(String key) {
-        Assert.hasText(key , "'key' must not be empty");
+        Assert.hasText(key, "'key' must not be empty");
         String stringProfiles = System.getProperty(key);
-        if(Objects.isNull(key) || StringUtils.isEmpty(stringProfiles)){
+        if (Objects.isNull(key) || StringUtils.isEmpty(stringProfiles)) {
             return "embedded";
         }
         return System.getProperty(key);

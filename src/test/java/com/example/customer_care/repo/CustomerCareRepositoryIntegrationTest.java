@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @ProfileValueSourceConfiguration(value = CustomSystemProfileValueSource.class)
 @RunWith(SpringRunner.class)
-@IfProfileValue(name= "spring.profiles.active" , value = "embedded")
+@IfProfileValue(name = "spring.profiles.active", value = "embedded")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CustomerCareRepositoryIntegrationTest {
 
@@ -24,11 +24,10 @@ public class CustomerCareRepositoryIntegrationTest {
     private CustomerCareRepository customerCareRepository;
 
 
-
     @Test
-    public void checkSave(){
+    public void checkSave() {
         //Arrange
-       String complaintId =  UUID.randomUUID().toString();
+        String complaintId = UUID.randomUUID().toString();
         CustomerComplaint complaint = getCustomerComplaint(complaintId);
 
         // Act
@@ -37,7 +36,6 @@ public class CustomerCareRepositoryIntegrationTest {
         // Assert
         Assert.assertNotNull(returnedComplaint.getId());
         Assert.assertEquals(complaint.getId(), complaintId);
-
 
 
     }
@@ -53,9 +51,9 @@ public class CustomerCareRepositoryIntegrationTest {
     }
 
     @Test
-    public void checkDelete(){
+    public void checkDelete() {
         //Arrange
-        String complaintId =  UUID.randomUUID().toString();
+        String complaintId = UUID.randomUUID().toString();
         CustomerComplaint complaint = getCustomerComplaint(complaintId);
 
         // Act
@@ -69,15 +67,13 @@ public class CustomerCareRepositoryIntegrationTest {
         Assert.assertNull(rechechComplaint);
 
 
-
-
     }
 
 
     @Test
-    public void checkUpdate(){
+    public void checkUpdate() {
         //Arrange
-        String complaintId =  UUID.randomUUID().toString();
+        String complaintId = UUID.randomUUID().toString();
         CustomerComplaint complaint = getCustomerComplaint(complaintId);
 
         // Act
@@ -90,17 +86,15 @@ public class CustomerCareRepositoryIntegrationTest {
 
         // Assert
         Assert.assertNotNull(recheckComplaint);
-        Assert.assertEquals(recheckComplaint.getFirstName() , "Pramod-changed" );
-
-
+        Assert.assertEquals(recheckComplaint.getFirstName(), "Pramod-changed");
 
 
     }
 
     @Test
-    public void checkRead(){
+    public void checkRead() {
         //Arrange
-        String complaintId =  UUID.randomUUID().toString();
+        String complaintId = UUID.randomUUID().toString();
         CustomerComplaint complaint = getCustomerComplaint(complaintId);
 
         // Act
@@ -108,12 +102,9 @@ public class CustomerCareRepositoryIntegrationTest {
         CustomerComplaint returnedComplaint = customerCareRepository.save(complaint);
 
 
-
         // Assert
         Assert.assertNotNull(returnedComplaint);
-        Assert.assertEquals(returnedComplaint.getFirstName() , "Pramod" );
-
-
+        Assert.assertEquals(returnedComplaint.getFirstName(), "Pramod");
 
 
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+
 @Service
 public class CustomerCareServiceImpl implements CustomerCareService {
 
@@ -36,21 +37,21 @@ public class CustomerCareServiceImpl implements CustomerCareService {
     public Boolean delete(String complaintId) {
         CustomerComplaint complaint = customerCareRepository.findOne(complaintId);
 
-       if(complaint != null) {
-           customerCareRepository.delete(complaintId);
-           CustomerComplaint recheckComplaint = customerCareRepository.findOne(complaintId);
-           return  (recheckComplaint != null ? false : true);
-       }else{
-           return false;
-       }
+        if (complaint != null) {
+            customerCareRepository.delete(complaintId);
+            CustomerComplaint recheckComplaint = customerCareRepository.findOne(complaintId);
+            return (recheckComplaint != null ? false : true);
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public CustomerComplaint updateWhole(CustomerComplaint complaint)  throws NewResourceNotAllowedInPutException{
-        CustomerComplaint existingComplaint =  customerCareRepository.findOne(complaint.getId());
-        if(existingComplaint ==  null){
+    public CustomerComplaint updateWhole(CustomerComplaint complaint) throws NewResourceNotAllowedInPutException {
+        CustomerComplaint existingComplaint = customerCareRepository.findOne(complaint.getId());
+        if (existingComplaint == null) {
             throw new NewResourceNotAllowedInPutException();
-        }else{
+        } else {
             complaint = customerCareRepository.save(complaint);
         }
 

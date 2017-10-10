@@ -4,7 +4,6 @@ import com.example.customer_care.customAnnotations.AllowedComplaintTypes;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
 public class CustomerComplaint {

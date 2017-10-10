@@ -7,37 +7,24 @@ import com.example.customer_care.services.CustomerCareService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,19 +45,16 @@ public class CustomerCareControllerTest {
     private CustomerCareController customerCareController;
 
 
-    
-
-
     // Arrange
     @Before
     public void setup() {
-         initMocks(this);
+        initMocks(this);
         //this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 
     }
 
     @Test
-    public void testShouldCreateCustomerComplaint()  throws Exception{
+    public void testShouldCreateCustomerComplaint() throws Exception {
 
         //Accept
         CustomerComplaint complaint = new CustomerComplaint();
@@ -81,7 +65,7 @@ public class CustomerCareControllerTest {
 
         when(this.service.create(complaint)).thenReturn(complaint);
 
-         String jsonPayload =  mapper.writeValueAsString(complaint);
+        String jsonPayload = mapper.writeValueAsString(complaint);
         //Act
         MvcResult mockResult = mockMvc.perform(post("/complaints").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonPayload)).andExpect(status().isCreated()).andReturn();
@@ -89,12 +73,11 @@ public class CustomerCareControllerTest {
 
         //Assert
         String response = mockResult.getResponse().getContentAsString();
-       
+
         Assert.assertThat(response,
                 org.hamcrest.Matchers.containsString("Pramod"));
 
     }
-
 
 
     @Test
@@ -103,7 +86,6 @@ public class CustomerCareControllerTest {
         CustomerComplaint customerComplaint = new CustomerComplaint();
 
         String customerJSON = "";
-        
 
 
         // get Employee object as a json string
@@ -118,7 +100,7 @@ public class CustomerCareControllerTest {
         String response = mockResult.getResponse().getContentAsString();
 
         //Assert
-        
+
         Assert.assertThat(response, org.hamcrest.Matchers.containsString("First name is Mandatory. It must not be empty and must have characters."));
 
 
@@ -133,7 +115,7 @@ public class CustomerCareControllerTest {
 
         String customerJSON = "";
 
-        
+
         when(service.create(any(CustomerComplaint.class))).thenReturn(customerComplaint);
 
         // Arrange Customer Complaint
@@ -163,7 +145,7 @@ public class CustomerCareControllerTest {
 
         String customerJSON = "";
 
-        
+
         when(service.create(any(CustomerComplaint.class))).thenReturn(customerComplaint);
 
         // get Employee object as a json string
@@ -176,7 +158,7 @@ public class CustomerCareControllerTest {
         String response = mockResult.getResponse().getContentAsString();
 
         //Assert
-        
+
         Assert.assertThat(response,
                 org.hamcrest.Matchers.containsString("Agent id is Mandatory. It must not be empty and must be Integer."));
 
@@ -240,7 +222,7 @@ public class CustomerCareControllerTest {
         when(service.getById(any(String.class))).thenReturn(complaint);
 
         //Act and Expect
-        MvcResult mockResult =  this.mockMvc.perform(get("/complaints/" + complaintId)
+        MvcResult mockResult = this.mockMvc.perform(get("/complaints/" + complaintId)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
@@ -264,7 +246,7 @@ public class CustomerCareControllerTest {
         when(service.getById(any(String.class))).thenReturn(null);
 
         //Act and Expect
-        MvcResult mockResult =  this.mockMvc.perform(get("/complaints/" + complaintId)
+        MvcResult mockResult = this.mockMvc.perform(get("/complaints/" + complaintId)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent()).andReturn();
 
@@ -279,7 +261,7 @@ public class CustomerCareControllerTest {
 
 
     @Test
-    public void testShouldRemoveComplaint() throws Exception{
+    public void testShouldRemoveComplaint() throws Exception {
         // Arrange
         String complaintId = UUID.randomUUID().toString();
         CustomerComplaint complaint = new CustomerComplaint();
@@ -289,7 +271,7 @@ public class CustomerCareControllerTest {
         when(service.delete(any(String.class))).thenReturn(true);
 
         //Act and Expect
-        MvcResult mockResult =  this.mockMvc.perform(delete("/complaints/" + complaintId)
+        MvcResult mockResult = this.mockMvc.perform(delete("/complaints/" + complaintId)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent()).andReturn();
 
@@ -303,7 +285,7 @@ public class CustomerCareControllerTest {
 
 
     @Test
-    public void testShouldNotRemoveInvalidComplaint() throws Exception{
+    public void testShouldNotRemoveInvalidComplaint() throws Exception {
         // Arrange
         String complaintId = UUID.randomUUID().toString();
         CustomerComplaint complaint = new CustomerComplaint();
@@ -313,7 +295,7 @@ public class CustomerCareControllerTest {
         when(service.delete(any(String.class))).thenReturn(false);
 
         //Act and Expect
-        MvcResult mockResult =  this.mockMvc.perform(delete("/complaints/" + complaintId)
+        MvcResult mockResult = this.mockMvc.perform(delete("/complaints/" + complaintId)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound()).andReturn();
 
@@ -327,9 +309,9 @@ public class CustomerCareControllerTest {
 
 
     @Test
-    public void testShouldUpdateCustomerComplaint()  throws Exception{
+    public void testShouldUpdateCustomerComplaint() throws Exception {
 
-        String complaintId =  UUID.randomUUID().toString();
+        String complaintId = UUID.randomUUID().toString();
 
         //Accept
         CustomerComplaint complaint = new CustomerComplaint();
@@ -341,9 +323,9 @@ public class CustomerCareControllerTest {
 
         when(this.service.updateWhole(any(CustomerComplaint.class))).thenReturn(complaint);
 
-        String jsonPayload =  mapper.writeValueAsString(complaint);
+        String jsonPayload = mapper.writeValueAsString(complaint);
         //Act
-        MvcResult mockResult = mockMvc.perform(put("/complaints/" + complaintId ).contentType(MediaType.APPLICATION_JSON)
+        MvcResult mockResult = mockMvc.perform(put("/complaints/" + complaintId).contentType(MediaType.APPLICATION_JSON)
                 .content(jsonPayload)).andExpect(status().isCreated()).andReturn();
 
 
@@ -357,9 +339,9 @@ public class CustomerCareControllerTest {
 
 
     @Test
-    public void testShouldDiscardNewCustomerComplaint()  throws Exception{
+    public void testShouldDiscardNewCustomerComplaint() throws Exception {
 
-        String complaintId =  UUID.randomUUID().toString();
+        String complaintId = UUID.randomUUID().toString();
 
         //Accept
         CustomerComplaint complaint = new CustomerComplaint();
@@ -371,9 +353,9 @@ public class CustomerCareControllerTest {
 
         when(this.service.updateWhole(any(CustomerComplaint.class))).thenThrow(new NewResourceNotAllowedInPutException());
 
-        String jsonPayload =  mapper.writeValueAsString(complaint);
+        String jsonPayload = mapper.writeValueAsString(complaint);
         //Act
-        MvcResult mockResult = mockMvc.perform(put("/complaints/" + complaintId ).contentType(MediaType.APPLICATION_JSON)
+        MvcResult mockResult = mockMvc.perform(put("/complaints/" + complaintId).contentType(MediaType.APPLICATION_JSON)
                 .content(jsonPayload)).andExpect(status().isMethodNotAllowed()).andReturn();
 
 
@@ -384,8 +366,6 @@ public class CustomerCareControllerTest {
                 org.hamcrest.Matchers.containsString("Existing resource is not allowed in Put Request. Please use POST method instead."));
 
     }
-
-
 
 
 }

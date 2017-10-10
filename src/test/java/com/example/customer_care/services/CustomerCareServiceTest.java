@@ -1,31 +1,24 @@
 package com.example.customer_care.services;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.example.customer_care.entity.CustomerComplaint;
 import com.example.customer_care.exceptions.NewResourceNotAllowedInPutException;
 import com.example.customer_care.repo.CustomerCareRepository;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.InjectMocks;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.boot.test.mock.mockito.*;
-import org.springframework.test.context.junit4.*;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -98,7 +91,7 @@ public class CustomerCareServiceTest {
         //Assert
         verify(repository).findOne(complaintId);
         Assert.assertNotNull(returnedComplaint);
-        Assert.assertEquals(complaintId,returnedComplaint.getId());
+        Assert.assertEquals(complaintId, returnedComplaint.getId());
 
     }
 
@@ -137,7 +130,7 @@ public class CustomerCareServiceTest {
         Boolean status = subject.delete(complaintId);
 
         //Assert
-       verify(repository,Mockito.atLeast(1)).findOne(complaintId);
+        verify(repository, Mockito.atLeast(1)).findOne(complaintId);
         verify(repository).delete(complaintId);
 
 
@@ -169,8 +162,8 @@ public class CustomerCareServiceTest {
     }
 
     @Test
-    public void testShouldUpdateEntireComplaint() throws  NewResourceNotAllowedInPutException{
-        String complaintId =  UUID.randomUUID().toString();
+    public void testShouldUpdateEntireComplaint() throws NewResourceNotAllowedInPutException {
+        String complaintId = UUID.randomUUID().toString();
         //Arrange
         CustomerComplaint complaint = new CustomerComplaint();
         complaint.setId(complaintId);
@@ -196,8 +189,8 @@ public class CustomerCareServiceTest {
 
 
     @Test(expected = NewResourceNotAllowedInPutException.class)
-    public void testShouldCheckExistingResourceInPut() throws NewResourceNotAllowedInPutException{
-        String complaintId =  UUID.randomUUID().toString();
+    public void testShouldCheckExistingResourceInPut() throws NewResourceNotAllowedInPutException {
+        String complaintId = UUID.randomUUID().toString();
         //Arrange
         CustomerComplaint complaint = new CustomerComplaint();
         complaint.setId(complaintId);
@@ -219,7 +212,6 @@ public class CustomerCareServiceTest {
 
 
     }
-
 
 
 }
