@@ -41,6 +41,13 @@ Entire REST UI documentation and  REST clinet UI to consume REST endpoint is inc
 
 http://localhost:8087/swagger-ui.html
 
+## Swagger as REST Endpoint client
+
+Swagger UI at http://localhost:8087/swagger-ui.html shows all REST endpoints. Click on show that will display following methods!
+
+![Architecture Overview - CQRS & Event Sourcing on CloudFoundry](/images/CQRS+EventSourcing-on-CloudFoundry.png)
+
+
 
   
 
