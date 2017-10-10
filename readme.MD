@@ -41,11 +41,56 @@ Entire REST UI documentation and  REST clinet UI to consume REST endpoint is inc
 
 http://localhost:8087/swagger-ui.html
 
-## Swagger as REST Endpoint client
+# Swagger as REST Endpoint client
+
+## List All Endpoints
 
 Swagger UI at http://localhost:8087/swagger-ui.html shows all REST endpoints. Click on show that will display following methods!
 
-![Architecture Overview - CQRS & Event Sourcing on CloudFoundry](/images/CQRS+EventSourcing-on-CloudFoundry.png)
+![List All Endpoints](/images/endpoints_list.png)
+
+## Submit Customer Complaint via POST Request
+
+Click on POST and then below that you'll find POST method endpoint:
+
+Fill the JSON body and click try it now! button to submit request and analyse returns
+
+![POST usage](/images/post_usage.png)
+
+## Submit GET by id and GET request to verify submitted Customer Complaint via POST request.
+
+Submitted post request you can validate through GET and GET all endpoints sample forms to do that are available below:
+
+You can get these forms by clicking GET buttons from swagger UI. Hit Try it out! button to Submit request.
+
+![GET usage](/images/get_usage.png)
+
+![GET_ALL usage](/images/getall_usage.png)
+
+## Update Customer Complaint via PUT Request
+
+You can update Customer Complaint resource via Put form which is listed below. Add update json in below form. 
+
+You can get this form by clicking Put button from swagger UI. Hit Try it out! button to Submit request.
+
+![PUT usage](/images/put_usage.png)
+
+You can verify updated resource in GET and GETALL forms!
+
+
+## Delete Customer Complaint via DELETE Request
+
+You can delete Customer Complaint resource via Delete form which is listed below. Add Delete json in below form. 
+
+You can go to this form by clicking DELETE button from swagger UI. Hit Try it out! button to Submit request.
+
+![DELETE usage](/images/delete_usage.png)
+
+You can verify updated resource in GET and GETALL forms!
+
+Thanks!
+
+
 
 
 
